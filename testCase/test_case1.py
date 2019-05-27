@@ -7,23 +7,13 @@ __author__ = 'lenovo'
 # 4.保存执行结果
 # 5.写入excel中（writeExcel模块）
 
-import requests,unittest
-from ddt import ddt,data,unpack
+import requests
 
 # 1.调用readExcel模块，拿到测试数据
 from common.readExcel import readExcel
 d = readExcel()  # 实例化
 data = d.assembleData()
 # print(data)
-
-@ddt
-class Mytestcase1(unittest.TestCase):
-    @data(*testda)
-    @unpack
-    def test_nomal(self,id,url,method,param,expect):
-        result = re.get
-
-
 
 # 2.根据接口的请求方式来判断调用xx方法（get请求/post请求）
 for i in data:
