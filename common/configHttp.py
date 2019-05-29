@@ -3,6 +3,7 @@ __author__ = 'lenovo'
 
 import requests
 # from common import readConfig as readConfig
+# localReadConfig = readConfig.ReadConfig
 
 
 class ConfigHttp(object):
