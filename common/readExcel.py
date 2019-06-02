@@ -14,8 +14,8 @@ import xlrd
 
 class readExcel(object):
     # 找到excel文件并打开(找不到文件时捕获异常)
-    # readbook = xlrd.open_workbook(r'F:\Code\interfaceTest\testDate\data.xls')
-    readbook = xlrd.open_workbook(r'E:\VIPtest2\Code\interfaceTest\testDate\data.xls')
+    readbook = xlrd.open_workbook(r'F:\Code\interfaceTest\testDate\data.xls')
+    # readbook = xlrd.open_workbook(r'E:\VIPtest2\Code\interfaceTest\testDate\data.xls')
     # 获取所有的sheet页名字的列表
     sheetlist = readbook.sheet_names()
     # print(sheetlist)

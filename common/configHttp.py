@@ -2,16 +2,16 @@
 __author__ = 'lenovo'
 
 import requests
-# from common import readConfig as readConfig
-# localReadConfig = readConfig.ReadConfig
+from common import readConfig as readConfig
+localReadConfig = readConfig.ReadConfig
 
 
 class ConfigHttp(object):
     # 定义get方法
-    def get(self,url,param):
+    def get(self,url,param,cookie=None,header=None,timeout=3):
         try:
             print(url,param)
-            response = requests.get(url,params=eval(param))
+            response = requests.get(url=url,params=eval(param),data=None,header=header,cookies=cookie,timeout=timeout)
             result = response.text
             # 获取结果
             return result
