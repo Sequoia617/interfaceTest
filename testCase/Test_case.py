@@ -1,87 +1,46 @@
 # coding:utf-8
-__author__ = 'lenovo'
+__author__ = 'annie'
 
-# 1.调用readExcel模块，拿到测试数据
-# 2.根据接口的请求方式来判断调用xx方法（get请求/post请求） -- 循环
-# 3.校验get请求/post请求的数据
-# 4.保存执行结果
-# 5.写入excel中（writeExcel模块）
+# 步骤
+# 1、调用read_excel模块拿到测试数据
+# 2、根据接口的请求方式判断调用XX方法
+# 3、校验
+# 4、保存执行结果
+# 5、写入excel
 
-# 使用ddt框架实现
-import requests,unittest,json
-from ddt import ddt,data,unpack
+import requests
+# import json
+
 from common.readExcel import readExcel
-from common.writeExcel import writeExcel
-from common.configHttp import ConfigHttp
 
-# 1--读取excel数据
-d = readExcel()  # 实例化
-testda = d.assembleData()
-# print(testda)
-# 实例化，以备调用封装好的requests方法
-re = ConfigHttp
-# 实例化，以备调用写入excel方法
-wr = writeExcel
+# 第一步
+d = readExcel()
+data = d.assembleData()
+# print(data)
 
-@ddt
-class Mytestcase1(unittest.TestCase):
-    @data(*testda)
-    @unpack
-    def test_nomal(self,id,url,method,param,expect):
-        print(id,url,method,param,expect)
-        print(type(eval(param)))
-        result = re.getRequest(url,method,param)
-        # 将response解码成python对象：dict
-        real = str(json.loads(result)['errorCode'])
-        try:
-            status = self.assertEqual(real,expect)
-            print('返回结果',status)
-            # status = None
-        except AssertionError as msg:
-            print(msg)
-            status = 'Error'
-        finally:
-            if status == None:
-                wr.writeData(id,real,'Success')
-            else:
-                wr.writeData(id,real,'Fail')
+# 第二步
+for i in data:
+    # print(i[3])
+    method = i[3]
+    urlstr = i[1]
+    param = eval(i[4])
+    expect = int(i[-1])
+    # url = i[1]
 
-if __name__=='__main__':
-    unittest.main
+    if method == 'post':
+        result = requests.post(url=urlstr,data=param)
+        print(result.text)
 
+    elif method == 'get':
+        print(urlstr,param)
+        result = requests.post(url=urlstr,params=param)
+        print(result.text)
 
-# import requests
-# # 1.调用readExcel模块，拿到测试数据
-# from common.readExcel import readExcel
-# d = readExcel()  # 实例化
-# data = d.assembleData()
-# # print(data)
-#
-# # 2.根据接口的请求方式来判断调用xx方法（get请求/post请求）
-# for i in data:
-#     print(i)
-#     print(i[3])
-#     method = i[3]
-#     urlstr = i[1]
-#     param = eval(i[4])
-#     expect = int(i[-1])
-#     url = i[1]
-#
-#     if method == 'post':
-#         result = requests.post(url=urlstr,data=param)
-#         print(result.text)
-#     elif method == 'get':
-#         result = requests.get(url=urlstr,params=param)
-#         print(result.text)
-#
-#     # 校验
-#     # print((result.json()['errorCode']),expect)
-#
-#     if result.status_code == 200 and result.json()['errorCode'] == expect:
-#         print('请求成功')
-#     else:
-#         print('请求失败')
-#
-#
+    # 校验
+    # print(result.json()['errorCode'],expect)
 
+    if result.status_code == 200 and result.json()['errorCode'] == expect:
+        print('请求成功')
 
+    else:
+        print('请求失败')

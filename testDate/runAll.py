@@ -1,33 +1,42 @@
 # coding:utf-8
 __author__ = 'lenovo'
 
+# 1、加载目标测试用例
+# 2、执行所有的用例，并把结果写入html报告
+# 3、获取最新的测试报告
+# 4、发送最新的测试报告
+
 import unittest
-import  time
+import time
 import os
+import sys
 import HTMLTestRunner
-from common.configMyEmail import configMyEmail
+from common.readConfig import ReadConfig
+from common.configEmail import configMyEmail
+from testCase.TestCase import TestCase
 
-def run_case(dir = "testCase"):
-    # 按照指定目录加载目标用例
-    case_dir = os.getcwd() + "\\" + dir
-    print(case_dir)
-    discover = unittest.defaultTestLoader.discover(case_dir,pattern="test_case*.py",top_level_dir=None)
-    return  discover
+class myTest(unittest.TestCase):
 
-def clear_report():
-    nowPath = os.path.dirname(__file__)
-    print('nowpath',nowPath)
-    reportPath = nowPath + "/" + "report"
-    fileList = os.listdir(reportPath)
-    # 如果该目录下的文件超过5个，则开始清理
-    if len(fileList)>5:
-        for i in fileList:
-            file = reportPath + "/" + i
-            os.remove(file)
+    def run_case(dir = "testCase"):
+        # 按照指定目录加载目标用例
+        case_dir = os.getcwd() + "/" + dir
+        print(case_dir)
+        discover = unittest.defaultTestLoader.discover(case_dir,pattern="TestCase*.py",top_level_dir=None)
+        return discover
 
-    fileNewList = os.listdir(reportPath)
-    print(fileNewList)
+    def clear_report(self):
+        nowPath = os.path.dirname(__file__)
+        print('nowpath',nowPath)
+        reportPath = nowPath + "/" + "report"
+        fileList = os.listdir(reportPath)
+        # 如果该目录下的文件超过5个，则开始清理
+        if len(fileList)>5:
+            for i in fileList:
+                file = reportPath + "/" + i
+                os.remove(file)
 
+        fileNewList = os.listdir(reportPath)
+        print(fileNewList)
 
 if __name__ == '__main__':
     clear_report()

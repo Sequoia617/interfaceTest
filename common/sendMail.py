@@ -43,6 +43,6 @@ class SendMail():
         finally:
             smtp.quit()
 
-    def find_new_file(self):
+    # def find_new_file(self):
 
 
