@@ -46,7 +46,7 @@ class configMyEmail():
         finally:
             r.close()
 
-c = configEmail
+c = configMyEmail()
 c.send_email()
 
 

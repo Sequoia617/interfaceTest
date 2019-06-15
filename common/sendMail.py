@@ -42,7 +42,50 @@ class SendMail():
             print('邮件发送成功')
         finally:
             smtp.quit()
+    # 查找最新文件
+    def find_new_file(self):
+        # 获取当前路径
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        # print('current',current_path)
+        # 获取报告的存放路径
+        filePath = os.path.dirname(current_path.dirname(current_path) + '/' + 'report')
+        print('filePath',filePath)
 
-    # def find_new_file(self):
+        fileList = os.listdir(filePath)
+        # print(fileList)
+        fileDict = {}
+        fileTime = []
+        for i in fileList:
+            filename = filePath + '/' + i
+            iTime = os.path.getmtime(filename)
+            fileTime.append(iTime)
+            fileDict[iTime] = i
+        print(fileDict,fileTime)
+
+        sendfilekey = max(fileTime)
+        sendfile = fileDict[sendfilekey]
+        print(sendfile)
+        sendfile = filePath + '/' + sendfile
+        return sendfile
+    # 发送邮件
+    def send_mail(self):
+        self.config_file()
+        try:
+            s = smtplib.SMTP()
+            print(self.mail_host,self.mail_user,self.mail_pass,self.sender,self.receivers)
+            s.connect(self.mail_host,25) # 25为 SMTP 端口号
+            # s.set_debuglevel(1)
+            s.login(self.mail_user,self.mail_pass)
+            s.sendmail(self.sender,self.receivers,self.msg.as_string())
+            print('邮件发送成功')
+        except smtplib.SMTPException as msg:
+            # print(msg)
+            print('Error:无法发送邮件')
+
+# if __name__ == '__main__':
+#     pass
+# c = ConfigEmail()
+# c.send_mail()
+
 
 
